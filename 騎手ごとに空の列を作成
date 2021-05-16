@@ -1,0 +1,12 @@
+  target_jockey=list(df['騎手'].unique())
+  
+  # 騎手名_renpaiという列を作成
+  def newcolumns(self,target_jockey):
+      new_columns=[]
+      for i in target_jockey:
+          #print("{}_renpai".format(i))
+          new_columns.append("{}_renpai".format(i))
+      for x in new_columns:
+          df[x]=""
+
+      return df
