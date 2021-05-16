@@ -1,0 +1,11 @@
+target_jockey=list(df['騎手'].unique())
+
+# 騎手ごとの行のインデックス番号リストを作成
+def jockey_dict(self,target_jockey):
+    index_jockey_dict={}
+    for i in target_jockey:
+        index_list = []
+        index_list =list(df[df['騎手']==i].index)
+        index_jockey_dict[i] = index_list
+
+    return index_jockey_dict
