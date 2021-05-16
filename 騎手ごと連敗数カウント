@@ -1,0 +1,43 @@
+## 前提条件
+## index_jockey_dict(ジョッキーごとの対象レースインデックス辞書)作成済
+## 騎手毎の連敗列作成済
+
+
+# max_renpai_dictの作成
+
+def renpaibeforewin(self,index_jockey_dict,df2):
+    max_renpai_dict = {}
+
+    for i in index_jockey_dict:
+        max_renpai = []    
+        #　各ジョッキー連敗列の列番号を取得
+        column_no = df2.columns.get_loc("{}_renpai".format(i))
+
+        # for文の何回目かをカウント
+        count = 0
+
+        # 1着時にそれまでの連敗数をmax_renpaiリストに追加する。
+        for s in index_jockey_dict[i]:
+            # s にはindex番号が入る
+            if df2.iloc[s]['確定着順']==1:
+                df2.iat[s,column_no] = 0
+                if count != 0:
+                    max_renpai.append(df2.iat[index_jockey_dict[i][count-1],column_no])
+
+
+            else:
+                if count == 0:
+                    #print("0")
+                    #print(df.iat[s,column_no])
+                    df2.iat[s,column_no] = 1
+                else:
+                    #print(df.iat[i-1,32]+1)
+                    #1着でない場合は、前の出走レースの連敗数に１を加えた数を連敗数フィールドに入れる
+                    df2.iat[s,column_no] = df2.iat[index_jockey_dict[i][count-1],column_no]+1
+
+            count += 1
+            # max_renpaiリストから連敗数が1以上の値に絞り込む
+            max_renpai = [t for t in max_renpai if t >0]
+        max_renpai_dict[i] = max_renpai
+
+    return max_renpai_dict
